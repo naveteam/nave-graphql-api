@@ -3,11 +3,13 @@ import { mutationWithClientMutationId } from 'graphql-relay'
 import { getRepository } from 'typeorm'
 
 import User from '../../../../entity/User'
-import { generateToken } from '../../../../auth'
 
 export default mutationWithClientMutationId({
-  name: 'loginUserMutation',
+  name: 'createUserMutation',
   inputFields: {
+    name: {
+      type: new GraphQLNonNull(GraphQLString),
+    },
     email: {
       type: new GraphQLNonNull(GraphQLString),
     },
@@ -15,28 +17,30 @@ export default mutationWithClientMutationId({
       type: new GraphQLNonNull(GraphQLString),
     },
   },
-  mutateAndGetPayload: async ({ email, password }) => {
-    const user = await getRepository(User).findOne({ email, password })
+  mutateAndGetPayload: async ({ name, email, password }) => {
+    const user = await getRepository(User).findOne({ email })
+    // msg's
+    const createUserSuccess = 'User created successfully'
+    const userExist = 'User exist'
 
-    const defaultErrorMessage = 'Invalid login or password'
     if (!user) {
+      await getRepository(User).create({ firstName: name, email, password })
       return {
-        error: defaultErrorMessage,
+        msg: createUserSuccess,
       }
     }
-
     return {
-      token: generateToken(user),
+      userExist: userExist,
     }
   },
   outputFields: {
-    token: {
+    msg: {
       type: GraphQLString,
-      resolve: ({ token }) => token,
+      resolve: ({ msg }) => msg,
     },
-    error: {
+    userExist: {
       type: GraphQLString,
-      resolve: ({ error }) => error,
+      resolve: ({ userExist }) => userExist,
     },
   },
 })

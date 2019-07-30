@@ -22,9 +22,9 @@ export async function getUser(token: string) {
 }
 
 type UserType = {
-  _id: string
+  id: number
 }
 
 export function generateToken(user: UserType) {
-  return jwt.sign({ id: user._id }, 'batman')
+  return jwt.sign({ id: user.id }, 'batman')
 }
