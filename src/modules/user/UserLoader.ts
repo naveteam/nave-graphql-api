@@ -1,12 +1,17 @@
-import UserType from './UserType'
+import { User } from '../../entity/User'
 
-// const loadUsers = (parentValue, args, ctx) => {
 const loadUsers = () => {
-  return [{ firstName: 'joao', lastName: 'pedro' }]
+  return User.find()
 }
 
-const loadUser = () => {
-  return { firstName: 'joao', lastName: 'pedro' }
+const loadUser = (ctx: any, args: any) => {
+  return User.find({
+    where: [
+      {
+        id: args.id,
+      },
+    ],
+  })
 }
 
 export default { loadUsers, loadUser }

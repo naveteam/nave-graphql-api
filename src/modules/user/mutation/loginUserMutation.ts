@@ -1,6 +1,5 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql'
 import { mutationWithClientMutationId } from 'graphql-relay'
-import { getRepository } from 'typeorm'
 
 import { User } from '../../../entity/User'
 import { generateToken } from '../../../auth'
@@ -16,7 +15,7 @@ export default mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async ({ email, password }) => {
-    const user = await getRepository(User).findOne({ email, password })
+    const user = await User.findOne({ email, password })
 
     const defaultErrorMessage = 'Invalid login or password'
     if (!user) {

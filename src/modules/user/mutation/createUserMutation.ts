@@ -1,6 +1,5 @@
 import { GraphQLString, GraphQLNonNull } from 'graphql'
 import { mutationWithClientMutationId } from 'graphql-relay'
-import { getRepository } from 'typeorm'
 
 import { User } from '../../../entity/User'
 
@@ -18,13 +17,13 @@ export default mutationWithClientMutationId({
     },
   },
   mutateAndGetPayload: async ({ name, email, password }) => {
-    const user = await getRepository(User).findOne({ email })
+    const user = await User.findOne({ email })
     // msg's
     const createUserSuccess = 'User created successfully'
     const userExist = 'User exist'
 
     if (!user) {
-      const user = await getRepository(User).create({
+      const user = await User.create({
         username: name,
         email,
         password,
