@@ -5,10 +5,7 @@ import Base from './Base'
 @Entity()
 export default class User extends Base {
   @Column()
-  firstName: string
-
-  @Column()
-  lastName: string
+  username: string
 
   @Column()
   email: string

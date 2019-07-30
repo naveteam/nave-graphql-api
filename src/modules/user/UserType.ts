@@ -8,10 +8,7 @@ export default new GraphQLObjectType({
     _id: {
       type: GraphQLID,
     },
-    firstName: {
-      type: GraphQLString,
-    },
-    lastName: {
+    name: {
       type: GraphQLString,
     },
     email: {

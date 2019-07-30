@@ -2,12 +2,13 @@ import jwt from 'jsonwebtoken'
 import { getRepository } from 'typeorm'
 
 import User from './entity/User'
+import { jwtSecret } from './config'
 
 export async function getUser(token: string) {
   if (!token) return { user: null }
 
   try {
-    const decodedToken: any = jwt.verify(token, 'batman')
+    const decodedToken: any = jwt.verify(token, jwtSecret)
 
     const user = await getRepository(User).findOne({
       id: decodedToken.id,
@@ -26,5 +27,5 @@ type UserType = {
 }
 
 export function generateToken(user: UserType) {
-  return jwt.sign({ id: user.id }, 'batman')
+  return jwt.sign({ id: user.id }, jwtSecret)
 }

@@ -24,18 +24,19 @@ export default mutationWithClientMutationId({
     const userExist = 'User exist'
 
     if (!user) {
-      await getRepository(User).create({
-        firstName: name,
-        lastName: 'test',
+      const user = await getRepository(User).create({
+        username: name,
         email,
         password,
       })
+
+      await user.save()
       return {
         msg: createUserSuccess,
       }
     }
     return {
-      userExist: userExist,
+      msg: userExist,
     }
   },
   outputFields: {
