@@ -3,14 +3,14 @@ import {
   GraphQLList,
   GraphQLNonNull,
   GraphQLID,
-  GraphQLString,
   GraphQLInt,
-} from "graphql";
-import UserType from "../modules/main/UserType";
+} from 'graphql'
+import UserType from '../modules/user/UserType'
+import UserLoader from '../modules/user/UserLoader'
 
 export default new GraphQLObjectType({
-  name: "QueryType",
-  description: "Get users[] and user",
+  name: 'QueryType',
+  description: 'Get users[] and user',
   fields: () => ({
     user: {
       type: UserType,
@@ -19,9 +19,7 @@ export default new GraphQLObjectType({
           type: new GraphQLNonNull(GraphQLID),
         },
       },
-      resolve: (parentValue, args, ctx) => {
-        return { firstName: "joao", lastName: "pedro" };
-      },
+      resolve: UserLoader.loadUser,
     },
     users: {
       type: new GraphQLList(UserType),
@@ -33,9 +31,7 @@ export default new GraphQLObjectType({
           type: GraphQLInt,
         },
       },
-      resolve: (parentValue, args, ctx) => {
-        return [{ firstName: "joao", lastName: "pedro" }];
-      },
+      resolve: UserLoader.loadUsers,
     },
   }),
-});
+})

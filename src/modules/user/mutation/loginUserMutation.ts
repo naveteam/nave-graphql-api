@@ -2,8 +2,8 @@ import { GraphQLString, GraphQLNonNull } from 'graphql'
 import { mutationWithClientMutationId } from 'graphql-relay'
 import { getRepository } from 'typeorm'
 
-import User from '../../../../entity/User'
-import { generateToken } from '../../../../auth'
+import User from '../../../entity/User'
+import { generateToken } from '../../../auth'
 
 export default mutationWithClientMutationId({
   name: 'loginUserMutation',

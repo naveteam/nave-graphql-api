@@ -2,7 +2,7 @@ import { GraphQLString, GraphQLNonNull } from 'graphql'
 import { mutationWithClientMutationId } from 'graphql-relay'
 import { getRepository } from 'typeorm'
 
-import User from '../../../../entity/User'
+import User from '../../../entity/User'
 
 export default mutationWithClientMutationId({
   name: 'createUserMutation',
@@ -24,7 +24,12 @@ export default mutationWithClientMutationId({
     const userExist = 'User exist'
 
     if (!user) {
-      await getRepository(User).create({ firstName: name, email, password })
+      await getRepository(User).create({
+        firstName: name,
+        lastName: 'test',
+        email,
+        password,
+      })
       return {
         msg: createUserSuccess,
       }
