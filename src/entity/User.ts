@@ -1,9 +1,10 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm'
+import { Role } from './Role'
 
 import Base from './Base'
 
 @Entity()
-export default class User extends Base {
+export class User extends Base {
   @Column()
   username: string
 
@@ -12,4 +13,8 @@ export default class User extends Base {
 
   @Column()
   password: string
+
+  @ManyToMany(type => Role)
+  @JoinTable()
+  role: number
 }

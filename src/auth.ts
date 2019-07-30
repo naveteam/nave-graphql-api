@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import { getRepository } from 'typeorm'
 
-import User from './entity/User'
+import { User } from './entity/User'
 import { jwtSecret } from './config'
 
 export async function getUser(token: string) {
