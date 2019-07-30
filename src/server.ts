@@ -5,12 +5,13 @@ import json from 'koa-json'
 import bodyparser from 'koa-bodyparser'
 import cors from 'kcors'
 import dotenv from 'dotenv-safe'
-const graphqlHTTP = require('koa-graphql')
-import schema from './schema'
-// import mongoose from 'mongoose';
-import { getUser } from './auth'
-// import database from './database';
+import { GraphQLError } from 'graphql'
+import koaPlayground from 'graphql-playground-middleware-koa'
 import multer from 'koa-multer'
+const graphqlHTTP = require('koa-graphql')
+
+import schema from './schema'
+import { getUser } from './auth'
 
 // init router and koa
 const app = new koa()
@@ -38,7 +39,7 @@ const graphqlSettingsPerReq = async (req: Request, ctx: Response) => {
   // );
 
   return {
-    graphiql: true,
+    graphiql: process.env.NODE_ENV !== 'production',
     schema,
     rootValue: {
       request: ctx.req,
@@ -47,6 +48,17 @@ const graphqlSettingsPerReq = async (req: Request, ctx: Response) => {
       user,
       req,
       // dataloaders,
+    },
+    formatError: (error: GraphQLError) => {
+      console.log(error.message)
+      console.log(error.locations)
+      console.log(error.stack)
+
+      return {
+        message: error.message,
+        locations: error.locations,
+        stack: error.stack,
+      }
     },
   }
 }
@@ -60,5 +72,12 @@ const limits = {
 }
 
 router.all('/graphql', multer({ storage, limits }).any(), graphqlServer)
+router.all(
+  '/graphiql',
+  koaPlayground({
+    endpoint: '/graphql',
+    subscriptionEndpoint: `ws://localhost:${process.env.GRAPHQL_PORT}/subscriptions`,
+  })
+)
 
 export default app

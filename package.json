@@ -51,6 +51,7 @@
     "dotenv-safe": "^6.1.0",
     "form-data": "^2.4.0",
     "graphql": "^14.4.2",
+    "graphql-playground-middleware-koa": "^1.6.12",
     "graphql-relay": "^0.6.0",
     "idx": "^2.5.6",
     "jsonwebtoken": "^8.5.1",
